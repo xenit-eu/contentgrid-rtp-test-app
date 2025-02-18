@@ -1,0 +1,78 @@
+import java.time.Instant
+
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.3.4'
+	id 'io.spring.dependency-management' version '1.1.7'
+	id 'com.google.cloud.tools.jib' version '3.4.4' apply false
+}
+
+group = 'com.contentgrid.userapps.rtptestorg'
+version = '0.0.1-SNAPSHOT'
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(17)
+	}
+}
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'com.contentgrid.spring:contentgrid-spring-boot-starter:0.17.0'
+	implementation 'org.flywaydb:flyway-core'
+	implementation 'org.flywaydb:flyway-database-postgresql'
+	implementation 'org.testcontainers:postgresql'
+	annotationProcessor 'com.contentgrid.spring:contentgrid-spring-boot-starter-annotations:0.17.0'
+	annotationProcessor 'org.projectlombok:lombok'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+tasks.named('bootRun') {
+	systemProperty 'contentgrid.security.unauthenticated.allow', true
+	systemProperty 'contentgrid.security.csrf.disabled', true
+	systemProperty 'contentgrid.thunx.abac.source', 'none'
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
+
+def timestamp = Instant.now().getEpochSecond();
+
+allprojects {
+	apply plugin: com.google.cloud.tools.jib.gradle.JibPlugin
+
+	pluginManager.withPlugin('com.google.cloud.tools.jib') {
+		def imageNameProvider = project.provider {
+			"${project.findProperty('com.contentgrid.docker.registry.name')}/${project.name}:${project.version}-${timestamp}"
+		}
+		jib {
+			container {
+				jvmFlags = ['-XX:+UseContainerSupport', '-XX:MaxRAMPercentage=85.0']
+			}
+			to {
+				image = 'docker.contentgrid.com/rtp-test-app:latest'
+			}
+			allowInsecureRegistries = Boolean.parseBoolean(project.findProperty("com.contentgrid.docker.registry.allow-insecure"))
+		}
+		project.tasks.named('jib').configure {
+			doLast {
+				def dockerImgFile = file('build/docker.image')
+				println "writing ${jib.to.image} > ${dockerImgFile.absolutePath}"
+				dockerImgFile.newWriter().withWriter { writer ->
+					writer.write jib.to.image
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,11 @@
+spring:
+  main:
+    web-application-type: none
+  data:
+    jpa:
+      repositories:
+        enabled: false
+  autoconfigure:
+    exclude:
+      - com.contentgrid.thunx.api.autoconfigure.AbacAutoConfiguration
+      - com.contentgrid.spring.boot.autoconfigure.automation.ContentGridAutomationAutoConfiguration

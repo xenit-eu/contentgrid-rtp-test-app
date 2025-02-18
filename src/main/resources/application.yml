@@ -1,0 +1,32 @@
+spring:
+  datasource:
+    hikari:
+      schema: V1
+    url: jdbc:tc:postgresql:14:///
+  flyway:
+    schemas: public
+    default-schema: public
+  jpa:
+    properties:
+      hibernate:
+        globally_quoted_identifiers: true
+  content:
+    storage:
+      type:
+        default: fs
+  servlet:
+    multipart:
+      max-file-size: -1
+      max-request-size: -1
+  data:
+    rest:
+      sort-param-name: _sort
+      limit-param-name: _size
+server:
+  port: ${PORT:8080}
+contentgrid:
+  rest:
+    pagination: page_cursor
+    expose-legacy-page-info: false
+    fallback-to-default-relation-controller: true
+    use-multipart-hal-forms: true
