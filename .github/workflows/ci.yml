@@ -20,9 +20,9 @@ jobs:
         run: ./gradlew build
       - name: docker login
         env:
-          DOCKER_USER: ${{ secrets.CLOUDSMITH_USER }}
-          DOCKER_PASSWORD: ${{ secrets.CLOUDSMITH_APIKEY }}
-        run: echo $DOCKER_PASSWORD | docker login docker.contentgrid.com -u $DOCKER_USER --password-stdin
+          DOCKER_USER: ${{ github.actor }}
+          DOCKER_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
+        run: echo $DOCKER_PASSWORD | docker login ghcr.io -u $DOCKER_USER --password-stdin
       - name: Docker image
         if: ${{ github.ref == 'refs/heads/main' || startswith(github.ref, 'refs/tags/') }}
         run: ./gradlew jib

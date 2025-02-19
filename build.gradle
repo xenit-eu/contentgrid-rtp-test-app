@@ -53,15 +53,12 @@ allprojects {
 	apply plugin: com.google.cloud.tools.jib.gradle.JibPlugin
 
 	pluginManager.withPlugin('com.google.cloud.tools.jib') {
-		def imageNameProvider = project.provider {
-			"${project.findProperty('com.contentgrid.docker.registry.name')}/${project.name}:${project.version}-${timestamp}"
-		}
 		jib {
 			container {
 				jvmFlags = ['-XX:+UseContainerSupport', '-XX:MaxRAMPercentage=85.0']
 			}
 			to {
-				image = 'docker.contentgrid.com/rtp-test-app:latest'
+				image = 'ghcr.io/xenit-eu/contentgrid-rtp-test-app:latest'
 			}
 			allowInsecureRegistries = Boolean.parseBoolean(project.findProperty("com.contentgrid.docker.registry.allow-insecure"))
 		}
