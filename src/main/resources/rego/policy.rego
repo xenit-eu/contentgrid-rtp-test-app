@@ -56,6 +56,27 @@ can_delete_supplier {
 	input.auth.principal.kind == "user"
 	input.auth.principal["contentgrid:admin"] == true
 }
+# - input.entity is type 'invoice'
+can_read_invoice {
+	input.auth.authenticated == true
+	input.auth.principal.kind == "user"
+	input.auth.principal["contentgrid:admin"] == true
+}
+can_create_invoice {
+	input.auth.authenticated == true
+	input.auth.principal.kind == "user"
+	input.auth.principal["contentgrid:admin"] == true
+}
+can_update_invoice {
+	input.auth.authenticated == true
+	input.auth.principal.kind == "user"
+	input.auth.principal["contentgrid:admin"] == true
+}
+can_delete_invoice {
+	input.auth.authenticated == true
+	input.auth.principal.kind == "user"
+	input.auth.principal["contentgrid:admin"] == true
+}
 # End policy zsn6mlr6y4tq
 default allow := false
 
