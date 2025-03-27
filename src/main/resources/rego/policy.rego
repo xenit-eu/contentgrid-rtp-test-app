@@ -34,6 +34,29 @@ default can_update_supplier := false
 
 default can_delete_supplier := false
 
+# Policy 6z4vihwwdvdq
+# - input.entity is type 'invoice'
+can_read_invoice {
+	input.auth.authenticated == true
+	input.auth.principal.kind == "user"
+	input.auth.principal["contentgrid:manage_invoices"] == true
+}
+can_create_invoice {
+	input.auth.authenticated == true
+	input.auth.principal.kind == "user"
+	input.auth.principal["contentgrid:manage_invoices"] == true
+}
+can_update_invoice {
+	input.auth.authenticated == true
+	input.auth.principal.kind == "user"
+	input.auth.principal["contentgrid:manage_invoices"] == true
+}
+can_delete_invoice {
+	input.auth.authenticated == true
+	input.auth.principal.kind == "user"
+	input.auth.principal["contentgrid:manage_invoices"] == true
+}
+# End policy 6z4vihwwdvdq
 # Policy zsn6mlr6y4tq
 # - input.entity is type 'supplier'
 can_read_supplier {
