@@ -1,4 +1,3 @@
-CREATE INDEX CONCURRENTLY "_dek_storage_kek_label_idx" ON "_dek_storage"("kek_label");
 CREATE INDEX CONCURRENTLY "supplier__name_idx" ON "supplier"(normalize("name", NFKC));
 CREATE INDEX CONCURRENTLY "supplier__name_cgsearch" ON "supplier"("extensions".contentgrid_prefix_search_normalize("name") text_pattern_ops);
 CREATE UNIQUE INDEX CONCURRENTLY "supplier__bank_account_idx" ON "supplier"(normalize("bank_account", NFKC));

@@ -20,18 +20,15 @@
 -- END: enable-feature app/cursor-based-pagination
 -- BEGIN: enable-feature app/omit-legacy-page-metadata
 -- END: enable-feature app/omit-legacy-page-metadata
--- BEGIN: enable-feature app/content-encryption
-CREATE TABLE "_dek_storage" ("content_id" text NOT NULL, "kek_label" text NOT NULL, "algorithm" text NOT NULL, "encrypted_dek" bytea NOT NULL, "iv" bytea NOT NULL, PRIMARY KEY ("content_id", "kek_label"));
--- END: enable-feature app/content-encryption
 CREATE TABLE "supplier" ("id" uuid NOT NULL, "_version" bigint NOT NULL DEFAULT 0, PRIMARY KEY ("id"));
 ALTER TABLE "supplier" ADD COLUMN "name" text NULL;
+ALTER TABLE "supplier" ALTER COLUMN "name" SET NOT NULL;
 CREATE SCHEMA "extensions";
 CREATE EXTENSION unaccent SCHEMA "extensions";
 CREATE FUNCTION "extensions".contentgrid_prefix_search_normalize(arg text)
 	RETURNS text
 	LANGUAGE sql IMMUTABLE RETURNS NULL ON NULL INPUT PARALLEL SAFE
 RETURN "extensions".unaccent('extensions.unaccent', lower(normalize(arg, NFKC)));
-ALTER TABLE "supplier" ALTER COLUMN "name" SET NOT NULL;
 ALTER TABLE "supplier" ADD COLUMN "telephone" text NULL;
 ALTER TABLE "supplier" ALTER COLUMN "telephone" SET NOT NULL;
 ALTER TABLE "supplier" ADD COLUMN "bank_account" text NULL;

@@ -13,9 +13,6 @@ spring:
 contentgrid:
   appserver:
     application-model: classpath:application-model.json
-    content:
-      encryption:
-        enabled: true
 server:
   port: ${PORT:8080}
   max-http-request-header-size: 10MB
