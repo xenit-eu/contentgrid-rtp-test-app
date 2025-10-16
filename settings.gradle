@@ -1,1 +1,4 @@
 rootProject.name = 'contentgrid-rtp-test-app'
+
+include 'contentgrid-rtp-test-app-v1'
+include 'contentgrid-rtp-test-app-v2'

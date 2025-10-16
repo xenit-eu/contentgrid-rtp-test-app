@@ -1,0 +1,982 @@
+openapi: "3.0.2"
+info:
+  description: "ContentGrid app for rtptestorg/rtptestapp"
+  version: "0.0.1-SNAPSHOT"
+  title: "RtptestappApiApplication"
+tags:
+- name: "supplier"
+  description: ""
+- name: "invoice"
+  description: ""
+paths:
+  /suppliers:
+    get:
+      tags:
+      - "supplier"
+      operationId: "get-suppliers"
+      summary: "Retrieve supplier list"
+      parameters:
+      - name: "name"
+        in: "query"
+        description: ""
+        required: false
+        schema:
+          type: "string"
+      - name: "name~prefix"
+        in: "query"
+        description: "Starts with name"
+        required: false
+        schema:
+          type: "string"
+      - name: "bank_account~prefix"
+        in: "query"
+        description: "Starts with bank_account"
+        required: false
+        schema:
+          type: "string"
+      - name: "_cursor"
+        in: "query"
+        description: "Cursor to access a page (cursors are server-generated and supplied\
+          \ in the page metadata)"
+        required: false
+        schema:
+          type: "string"
+          example: "1mlpulv1"
+      - name: "_size"
+        in: "query"
+        description: "Page size"
+        required: false
+        schema:
+          type: "integer"
+      - name: "_sort"
+        in: "query"
+        required: false
+        schema:
+          type: "array"
+          items:
+            type: "string"
+            enum:
+            - "name,asc"
+            - "name,desc"
+            example: "name,asc"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/supplierCollection"
+    post:
+      tags:
+      - "supplier"
+      operationId: "create-supplier"
+      summary: "Create a new supplier"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/supplierPostBody"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/supplierPostMultipartFormDataBody"
+      responses:
+        "201":
+          description: "The supplier has been created"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/supplierResponse"
+        "400":
+          description: "The supplier can not be created due to a problem with the\
+            \ submitted data"
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/problemDetailDiscriminator"
+        "409":
+          description: "The supplier can not be created due to a unique attribute\
+            \ already existing with that value"
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/problemDetailDiscriminator"
+  /suppliers/{id}:
+    get:
+      tags:
+      - "supplier"
+      operationId: "get-supplier"
+      summary: "Retrieve the supplier"
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        schema:
+          type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/supplierResponse"
+    put:
+      tags:
+      - "supplier"
+      operationId: "update-supplier"
+      summary: "Update all attributes of the supplier"
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        schema:
+          type: "string"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/supplierPutBody"
+      responses:
+        "200":
+          description: "The supplier has been updated"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/supplierResponse"
+        "400":
+          description: "The supplier can not be updated due to a problem with the\
+            \ submitted data"
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/problemDetailDiscriminator"
+        "409":
+          description: "The supplier can not be updated due to a unique attribute\
+            \ already existing with that value"
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/problemDetailDiscriminator"
+    patch:
+      tags:
+      - "supplier"
+      operationId: "patch-supplier"
+      summary: "Update some attributes of the supplier"
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        schema:
+          type: "string"
+      requestBody:
+        description: "Only attributes that have to be updated should be specified,\
+          \ other attributes should not be present"
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/supplierPatchBody"
+      responses:
+        "200":
+          description: "The supplier has been updated"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/supplierResponse"
+        "400":
+          description: "The supplier can not be updated due to a problem with the\
+            \ submitted data"
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/problemDetailDiscriminator"
+        "409":
+          description: "The supplier can not be updated due to a unique attribute\
+            \ already existing with that value"
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/problemDetailDiscriminator"
+    delete:
+      tags:
+      - "supplier"
+      operationId: "delete-supplier"
+      summary: "Delete the supplier"
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        schema:
+          type: "string"
+      responses:
+        "204":
+          description: "The supplier has been deleted"
+        "409":
+          description: "The supplier can not be deleted because it is linked via a\
+            \ required relation"
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/problemDetailDiscriminator"
+  /invoices:
+    get:
+      tags:
+      - "invoice"
+      operationId: "get-invoices"
+      summary: "Retrieve invoice list"
+      parameters:
+      - name: "pay_before"
+        in: "query"
+        description: ""
+        required: false
+        schema:
+          type: "string"
+          format: "date-time"
+      - name: "pay_before~before"
+        in: "query"
+        description: "Before pay_before"
+        required: false
+        schema:
+          type: "string"
+          format: "date-time"
+      - name: "pay_before~after"
+        in: "query"
+        description: "After pay_before"
+        required: false
+        schema:
+          type: "string"
+          format: "date-time"
+      - name: "total_amount"
+        in: "query"
+        description: ""
+        required: false
+        schema:
+          type: "number"
+          format: "double"
+      - name: "total_amount~lt"
+        in: "query"
+        description: "Less than total_amount"
+        required: false
+        schema:
+          type: "number"
+          format: "double"
+      - name: "total_amount~lte"
+        in: "query"
+        description: "Less than or equal to total_amount"
+        required: false
+        schema:
+          type: "number"
+          format: "double"
+      - name: "total_amount~gt"
+        in: "query"
+        description: "Greater than total_amount"
+        required: false
+        schema:
+          type: "number"
+          format: "double"
+      - name: "total_amount~gte"
+        in: "query"
+        description: "Greater than or equal to total_amount"
+        required: false
+        schema:
+          type: "number"
+          format: "double"
+      - name: "supplier.name"
+        in: "query"
+        description: ""
+        required: false
+        schema:
+          type: "string"
+      - name: "supplier.name~prefix"
+        in: "query"
+        description: "Starts with name"
+        required: false
+        schema:
+          type: "string"
+      - name: "supplier.bank_account~prefix"
+        in: "query"
+        description: "Starts with bank_account"
+        required: false
+        schema:
+          type: "string"
+      - name: "_cursor"
+        in: "query"
+        description: "Cursor to access a page (cursors are server-generated and supplied\
+          \ in the page metadata)"
+        required: false
+        schema:
+          type: "string"
+          example: "1mlpulv1"
+      - name: "_size"
+        in: "query"
+        description: "Page size"
+        required: false
+        schema:
+          type: "integer"
+      - name: "_sort"
+        in: "query"
+        required: false
+        schema:
+          type: "array"
+          items:
+            type: "string"
+            enum:
+            - "pay_before,asc"
+            - "pay_before,desc"
+            - "total_amount,asc"
+            - "total_amount,desc"
+            example: "pay_before,asc"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/invoiceCollection"
+    post:
+      tags:
+      - "invoice"
+      operationId: "create-invoice"
+      summary: "Create a new invoice"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/invoicePostBody"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/invoicePostMultipartFormDataBody"
+      responses:
+        "201":
+          description: "The invoice has been created"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/invoiceResponse"
+        "400":
+          description: "The invoice can not be created due to a problem with the submitted\
+            \ data"
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/problemDetailDiscriminator"
+        "409":
+          description: "The invoice can not be created due to a unique attribute already\
+            \ existing with that value"
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/problemDetailDiscriminator"
+  /invoices/{id}:
+    get:
+      tags:
+      - "invoice"
+      operationId: "get-invoice"
+      summary: "Retrieve the invoice"
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        schema:
+          type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/invoiceResponse"
+    put:
+      tags:
+      - "invoice"
+      operationId: "update-invoice"
+      summary: "Update all attributes of the invoice"
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        schema:
+          type: "string"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/invoicePutBody"
+      responses:
+        "200":
+          description: "The invoice has been updated"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/invoiceResponse"
+        "400":
+          description: "The invoice can not be updated due to a problem with the submitted\
+            \ data"
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/problemDetailDiscriminator"
+        "409":
+          description: "The invoice can not be updated due to a unique attribute already\
+            \ existing with that value"
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/problemDetailDiscriminator"
+    patch:
+      tags:
+      - "invoice"
+      operationId: "patch-invoice"
+      summary: "Update some attributes of the invoice"
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        schema:
+          type: "string"
+      requestBody:
+        description: "Only attributes that have to be updated should be specified,\
+          \ other attributes should not be present"
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/invoicePatchBody"
+      responses:
+        "200":
+          description: "The invoice has been updated"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/invoiceResponse"
+        "400":
+          description: "The invoice can not be updated due to a problem with the submitted\
+            \ data"
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/problemDetailDiscriminator"
+        "409":
+          description: "The invoice can not be updated due to a unique attribute already\
+            \ existing with that value"
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/problemDetailDiscriminator"
+    delete:
+      tags:
+      - "invoice"
+      operationId: "delete-invoice"
+      summary: "Delete the invoice"
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        schema:
+          type: "string"
+      responses:
+        "204":
+          description: "The invoice has been deleted"
+        "409":
+          description: "The invoice can not be deleted because it is linked via a\
+            \ required relation"
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/problemDetailDiscriminator"
+  /invoices/{id}/supplier:
+    get:
+      tags:
+      - "invoice"
+      operationId: "get-invoice-supplier"
+      summary: "Retrieve the supplier linked with invoice as supplier"
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        schema:
+          type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/supplierResponse"
+        "404":
+          description: "The supplier relation does not link to any supplier"
+    post:
+      tags:
+      - "invoice"
+      operationId: "add-invoice-supplier"
+      summary: "Set the supplier that is linked with invoice as supplier"
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        schema:
+          type: "string"
+      requestBody:
+        description: "One supplier URI"
+        required: true
+        content:
+          text/uri-list:
+            schema:
+              type: "string"
+              example: "/suppliers/00000000-0000-0000-0000-000000000000"
+      responses:
+        "204":
+          description: "The supplier is linked with invoice as supplier"
+        "400":
+          description: "Multiple URIs are given, but supplier can only refer to one\
+            \ item"
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/problemDetailDiscriminator"
+        "409":
+          description: "Invalid supplier is present in the URI list"
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/problemDetailDiscriminator"
+    put:
+      tags:
+      - "invoice"
+      operationId: "update-invoice-supplier"
+      summary: "Set the supplier that is linked with invoice as supplier"
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        schema:
+          type: "string"
+      requestBody:
+        description: "One supplier URI"
+        required: true
+        content:
+          text/uri-list:
+            schema:
+              type: "string"
+              example: "/suppliers/00000000-0000-0000-0000-000000000000"
+      responses:
+        "204":
+          description: "The supplier is linked with invoice as supplier"
+        "400":
+          description: "Multiple URIs are given, but supplier can only refer to one\
+            \ item"
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/problemDetailDiscriminator"
+    delete:
+      tags:
+      - "invoice"
+      operationId: "delete-invoice-supplier"
+      summary: "Removes the link to supplier from supplier"
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        schema:
+          type: "string"
+      responses:
+        "204":
+          description: "The link to supplier has been removed from supplier"
+        "405":
+          description: "You can not remove the supplier link, because it is marked\
+            \ as required"
+  /invoices/{id}/document:
+    get:
+      tags:
+      - "invoice"
+      operationId: "get-invoice-document"
+      summary: "Retrieve the document file stored with invoice"
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        schema:
+          type: "string"
+      responses:
+        "200":
+          description: "Contents of the stored file"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+                format: "binary"
+        "404":
+          description: "No document file is stored with invoice"
+    put:
+      tags:
+      - "invoice"
+      operationId: "update-invoice-document"
+      summary: "Add or update the document file stored with invoice"
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        schema:
+          type: "string"
+      requestBody:
+        description: "File data to store"
+        required: true
+        content:
+          '*/*':
+            schema:
+              type: "string"
+              format: "binary"
+      responses:
+        "200":
+          description: "The file is uploaded and has overwritten the old file"
+        "201":
+          description: "The file is uploaded"
+    delete:
+      tags:
+      - "invoice"
+      operationId: "delete-invoice-document"
+      summary: "Delete the document file stored with invoice"
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        schema:
+          type: "string"
+      responses:
+        "204":
+          description: "The file has been deleted"
+components:
+  schemas:
+    Link:
+      type: "object"
+      properties:
+        href:
+          type: "string"
+      required:
+      - "href"
+    problemDetail:
+      type: "object"
+      properties:
+        type:
+          type: "string"
+        title:
+          type: "string"
+        status:
+          type: "integer"
+        detail:
+          type: "string"
+        instance:
+          type: "string"
+    problemDetailWithProperty:
+      allOf:
+      - $ref: "#/components/schemas/problemDetail"
+      - type: "object"
+        properties:
+          property:
+            type: "string"
+        required:
+        - "property"
+    problemDetailWithErrors:
+      allOf:
+      - $ref: "#/components/schemas/problemDetail"
+      - type: "object"
+        properties:
+          errors:
+            type: "array"
+            items:
+              oneOf:
+              - $ref: "#/components/schemas/problemDetail"
+              - $ref: "#/components/schemas/problemDetailWithProperty"
+        required:
+        - "errors"
+    problemDetailDiscriminator:
+      oneOf:
+      - $ref: "#/components/schemas/problemDetailWithErrors"
+      - $ref: "#/components/schemas/problemDetail"
+      discriminator:
+        propertyName: "type"
+        mapping:
+          https://contentgrid.cloud/problems/input/validation: "#/components/schemas/problemDetailWithErrors"
+          https://contentgrid.cloud/problems/input/duplicate-value: "#/components/schemas/problemDetail"
+          https://contentgrid.cloud/problems/integrity/constraint-violation: "#/components/schemas/problemDetail"
+          https://contentgrid.cloud/problems/invalid-request-body: "#/components/schemas/problemDetail"
+          https://contentgrid.cloud/problems/invalid-request-body/type: "#/components/schemas/problemDetail"
+          https://contentgrid.cloud/problems/invalid-request-body/json: "#/components/schemas/problemDetail"
+    page:
+      type: "object"
+      title: "Page metadata"
+      properties:
+        size:
+          type: "integer"
+          description: "Number of items shown on a single page"
+        total_items_estimate:
+          type: "integer"
+          description: "Estimated total number of items across all pages"
+        total_items_exact:
+          type: "integer"
+          description: "Exact total number of items across all pages (may be null\
+            \ if no exact number could be calculated)"
+          nullable: true
+        next_cursor:
+          type: "string"
+          description: "Cursor to access the next page of results (absent if there\
+            \ is no next page)"
+          example: "0msa4pz0"
+        prev_cursor:
+          type: "string"
+          description: "Cursor to access the previous page of results (absent if there\
+            \ is no previous page)"
+          example: "1mlpulv1"
+      required:
+      - "size"
+      - "total_items_estimate"
+      - "total_items_exact"
+    supplierResponse:
+      type: "object"
+      properties:
+        id:
+          type: "string"
+        name:
+          type: "string"
+        telephone:
+          type: "string"
+        bank_account:
+          type: "string"
+          nullable: true
+        _links:
+          type: "object"
+          properties:
+            self:
+              $ref: "#/components/schemas/Link"
+          required:
+          - "self"
+      required:
+      - "id"
+      - "name"
+      - "telephone"
+      - "bank_account"
+      - "_links"
+    invoiceResponse:
+      type: "object"
+      properties:
+        id:
+          type: "string"
+        received:
+          type: "string"
+          format: "date-time"
+        document:
+          $ref: "#/components/schemas/ContentInfo"
+        pay_before:
+          type: "string"
+          format: "date-time"
+        total_amount:
+          type: "number"
+          format: "double"
+        _links:
+          type: "object"
+          properties:
+            self:
+              $ref: "#/components/schemas/Link"
+          required:
+          - "self"
+      required:
+      - "id"
+      - "received"
+      - "document"
+      - "pay_before"
+      - "total_amount"
+      - "_links"
+    supplierCollection:
+      type: "object"
+      properties:
+        _embedded:
+          type: "object"
+          properties:
+            item:
+              type: "array"
+              items:
+                $ref: "#/components/schemas/supplierResponse"
+        page:
+          $ref: "#/components/schemas/page"
+      required:
+      - "page"
+    invoiceCollection:
+      type: "object"
+      properties:
+        _embedded:
+          type: "object"
+          properties:
+            item:
+              type: "array"
+              items:
+                $ref: "#/components/schemas/invoiceResponse"
+        page:
+          $ref: "#/components/schemas/page"
+      required:
+      - "page"
+    supplierPostBody:
+      type: "object"
+      properties:
+        name:
+          type: "string"
+        telephone:
+          type: "string"
+        bank_account:
+          type: "string"
+          nullable: true
+      required:
+      - "name"
+      - "telephone"
+    supplierPostMultipartFormDataBody:
+      type: "object"
+      properties:
+        name:
+          type: "string"
+        telephone:
+          type: "string"
+        bank_account:
+          type: "string"
+          nullable: true
+      required:
+      - "name"
+      - "telephone"
+    supplierPutBody:
+      type: "object"
+      properties:
+        name:
+          type: "string"
+        telephone:
+          type: "string"
+        bank_account:
+          type: "string"
+          nullable: true
+      required:
+      - "name"
+      - "telephone"
+    supplierPatchBody:
+      type: "object"
+      properties:
+        name:
+          type: "string"
+        telephone:
+          type: "string"
+        bank_account:
+          type: "string"
+          nullable: true
+    invoicePostBody:
+      type: "object"
+      properties:
+        received:
+          type: "string"
+          format: "date-time"
+        pay_before:
+          type: "string"
+          format: "date-time"
+        total_amount:
+          type: "number"
+          format: "double"
+        supplier:
+          type: "string"
+          nullable: true
+      required:
+      - "received"
+      - "pay_before"
+      - "total_amount"
+    invoicePostMultipartFormDataBody:
+      type: "object"
+      properties:
+        received:
+          type: "string"
+          format: "date-time"
+        document:
+          type: "string"
+          format: "binary"
+        pay_before:
+          type: "string"
+          format: "date-time"
+        total_amount:
+          type: "number"
+          format: "double"
+        supplier:
+          type: "string"
+          nullable: true
+      required:
+      - "received"
+      - "pay_before"
+      - "total_amount"
+    invoicePutBody:
+      type: "object"
+      properties:
+        received:
+          type: "string"
+          format: "date-time"
+        document:
+          $ref: "#/components/schemas/ContentInfoPUT"
+        pay_before:
+          type: "string"
+          format: "date-time"
+        total_amount:
+          type: "number"
+          format: "double"
+      required:
+      - "received"
+      - "pay_before"
+      - "total_amount"
+    invoicePatchBody:
+      type: "object"
+      properties:
+        received:
+          type: "string"
+          format: "date-time"
+        document:
+          $ref: "#/components/schemas/ContentInfoPATCH"
+        pay_before:
+          type: "string"
+          format: "date-time"
+        total_amount:
+          type: "number"
+          format: "double"
+    ContentInfo:
+      type: "object"
+      nullable: true
+      properties:
+        length:
+          type: "integer"
+          format: "int64"
+        mimetype:
+          type: "string"
+          example: "application/pdf"
+        filename:
+          type: "string"
+          nullable: true
+          example: "example.pdf"
+      required:
+      - "length"
+      - "mimetype"
+      - "filename"
+    ContentInfoPUT:
+      type: "object"
+      properties:
+        mimetype:
+          type: "string"
+          example: "application/pdf"
+        filename:
+          type: "string"
+          nullable: true
+          example: "example.pdf"
+      required:
+      - "mimetype"
+    ContentInfoPATCH:
+      type: "object"
+      properties:
+        mimetype:
+          type: "string"
+          example: "application/pdf"
+        filename:
+          type: "string"
+          nullable: true
+          example: "example.pdf"
