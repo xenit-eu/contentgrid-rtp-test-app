@@ -1,0 +1,18 @@
+spring:
+  datasource:
+    hikari:
+      schema: V1
+    url: jdbc:tc:postgresql:15:///
+  flyway:
+    schemas: public
+    default-schema: public
+  servlet:
+    multipart:
+      max-file-size: -1
+      max-request-size: -1
+contentgrid:
+  appserver:
+    application-model: classpath:application-model.json
+server:
+  port: ${PORT:8080}
+  max-http-request-header-size: 10MB

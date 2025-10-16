@@ -1,0 +1,59 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.5.5'
+	id 'io.spring.dependency-management' version '1.1.7'
+	id 'com.google.cloud.tools.jib' version '3.4.5'
+}
+
+group = 'com.contentgrid.userapps.rtptestorg'
+version = '0.0.1-SNAPSHOT'
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(21)
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'com.contentgrid.appserver:contentgrid-appserver-spring-boot-starter:0.0.5'
+	implementation 'org.flywaydb:flyway-core'
+	implementation 'org.flywaydb:flyway-database-postgresql'
+	implementation 'org.testcontainers:postgresql'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+tasks.named('bootRun') {
+	systemProperty 'contentgrid.security.unauthenticated.allow', true
+	systemProperty 'contentgrid.security.csrf.disabled', true
+	systemProperty 'contentgrid.thunx.abac.source', 'none'
+	systemProperty 'contentgrid.appserver.content-store.type', 'ephemeral'
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
+
+jib {
+	container {
+		jvmFlags = ['-XX:+UseContainerSupport', '-XX:MaxRAMPercentage=85.0']
+	}
+	to {
+		image = 'ghcr.io/xenit-eu/contentgrid-rtp-test-app:v2'
+	}
+	allowInsecureRegistries = Boolean.parseBoolean(project.findProperty("com.contentgrid.docker.registry.allow-insecure"))
+}
+
+project.tasks.named('jib').configure {
+	doLast {
+		def dockerImgFile = file('build/docker.image')
+		println "writing ${jib.to.image} > ${dockerImgFile.absolutePath}"
+		dockerImgFile.newWriter().withWriter { writer ->
+			writer.write jib.to.image
+		}
+	}
+}

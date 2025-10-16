@@ -4,7 +4,7 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.3.4'
 	id 'io.spring.dependency-management' version '1.1.7'
-	id 'com.google.cloud.tools.jib' version '3.4.5' apply false
+	id 'com.google.cloud.tools.jib' version '3.4.5'
 }
 
 group = 'com.contentgrid.userapps.rtptestorg'
@@ -47,29 +47,23 @@ tasks.named('test') {
 	useJUnitPlatform()
 }
 
-def timestamp = Instant.now().getEpochSecond();
 
-allprojects {
-	apply plugin: com.google.cloud.tools.jib.gradle.JibPlugin
+jib {
+	container {
+		jvmFlags = ['-XX:+UseContainerSupport', '-XX:MaxRAMPercentage=85.0']
+	}
+	to {
+		image = 'ghcr.io/xenit-eu/contentgrid-rtp-test-app:v1'
+	}
+	allowInsecureRegistries = Boolean.parseBoolean(project.findProperty("com.contentgrid.docker.registry.allow-insecure"))
+}
 
-	pluginManager.withPlugin('com.google.cloud.tools.jib') {
-		jib {
-			container {
-				jvmFlags = ['-XX:+UseContainerSupport', '-XX:MaxRAMPercentage=85.0']
-			}
-			to {
-				image = 'ghcr.io/xenit-eu/contentgrid-rtp-test-app:latest'
-			}
-			allowInsecureRegistries = Boolean.parseBoolean(project.findProperty("com.contentgrid.docker.registry.allow-insecure"))
-		}
-		project.tasks.named('jib').configure {
-			doLast {
-				def dockerImgFile = file('build/docker.image')
-				println "writing ${jib.to.image} > ${dockerImgFile.absolutePath}"
-				dockerImgFile.newWriter().withWriter { writer ->
-					writer.write jib.to.image
-				}
-			}
+project.tasks.named('jib').configure {
+	doLast {
+		def dockerImgFile = file('build/docker.image')
+		println "writing ${jib.to.image} > ${dockerImgFile.absolutePath}"
+		dockerImgFile.newWriter().withWriter { writer ->
+			writer.write jib.to.image
 		}
 	}
 }
