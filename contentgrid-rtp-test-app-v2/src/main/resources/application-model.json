@@ -1,1 +1,356 @@
-{"$schema":"https://contentgrid.cloud/schemas/application-schema.json","applicationName":"default","version":"1.0.0","entities":[{"name":"supplier","title":"Supplier","collectionTitle":"Suppliers","table":"supplier","pathSegment":"suppliers","linkName":"suppliers","primaryKey":{"type":"simple","name":"id","dataType":"uuid","columnName":"id","flags":["readOnly"]},"attributes":[{"type":"simple","name":"_version","dataType":"long","columnName":"_version","flags":["eTag"]},{"type":"simple","name":"name","dataType":"text","columnName":"name","constraints":[{"type":"required"}],"title":"Name"},{"type":"simple","name":"telephone","dataType":"text","columnName":"telephone","constraints":[{"type":"required"}],"title":"Telephone"},{"type":"simple","name":"bank_account","dataType":"text","columnName":"bank_account","constraints":[{"type":"unique"}],"title":"Bank account"}],"searchFilters":[{"name":"name","attributePath":[{"name":"name","type":"attr"}],"title":"Name","type":"exact"},{"name":"name~prefix","attributePath":[{"name":"name","type":"attr"}],"type":"prefix"},{"name":"bank_account~prefix","attributePath":[{"name":"bank_account","type":"attr"}],"type":"prefix"}],"sortableFields":[{"name":"name","attributePath":[{"name":"name","type":"attr"}]}]},{"name":"invoice","title":"Invoice","collectionTitle":"Invoices","table":"invoice","pathSegment":"invoices","linkName":"invoices","primaryKey":{"type":"simple","name":"id","dataType":"uuid","columnName":"id","flags":["readOnly"]},"attributes":[{"type":"simple","name":"_version","dataType":"long","columnName":"_version","flags":["eTag"]},{"type":"simple","name":"received","dataType":"datetime","columnName":"received","constraints":[{"type":"required"}],"title":"Received"},{"type":"content","name":"document","pathSegment":"document","linkName":"document","idColumn":"document__id","fileNameColumn":"document__filename","mimeTypeColumn":"document__mimetype","lengthColumn":"document__length","title":"Document"},{"type":"simple","name":"pay_before","dataType":"datetime","columnName":"pay_before","constraints":[{"type":"required"}],"title":"Pay before"},{"type":"simple","name":"total_amount","dataType":"double","columnName":"total_amount","constraints":[{"type":"required"}],"title":"Total amount"}],"searchFilters":[{"name":"pay_before","attributePath":[{"name":"pay_before","type":"attr"}],"title":"Pay before","type":"exact"},{"name":"pay_before~after","attributePath":[{"name":"pay_before","type":"attr"}],"type":"greater"},{"name":"pay_before~before","attributePath":[{"name":"pay_before","type":"attr"}],"type":"less"},{"name":"total_amount","attributePath":[{"name":"total_amount","type":"attr"}],"title":"Total amount","type":"exact"},{"name":"total_amount~gt","attributePath":[{"name":"total_amount","type":"attr"}],"type":"greater"},{"name":"total_amount~gte","attributePath":[{"name":"total_amount","type":"attr"}],"type":"greater-or-equal"},{"name":"total_amount~lt","attributePath":[{"name":"total_amount","type":"attr"}],"type":"less"},{"name":"total_amount~lte","attributePath":[{"name":"total_amount","type":"attr"}],"type":"less-or-equal"},{"name":"supplier.name","attributePath":[{"name":"supplier","type":"rel"},{"name":"name","type":"attr"}],"title":"Supplier: Name","type":"exact"},{"name":"supplier.name~prefix","attributePath":[{"name":"supplier","type":"rel"},{"name":"name","type":"attr"}],"type":"prefix"},{"name":"supplier.bank_account~prefix","attributePath":[{"name":"supplier","type":"rel"},{"name":"bank_account","type":"attr"}],"type":"prefix"}],"sortableFields":[{"name":"pay_before","attributePath":[{"name":"pay_before","type":"attr"}]},{"name":"total_amount","attributePath":[{"name":"total_amount","type":"attr"}]}]}],"relations":[{"type":"one-to-many","sourceEndpoint":{"entityName":"supplier","flags":["hidden"]},"targetEndpoint":{"name":"supplier","pathSegment":"supplier","entityName":"invoice","title":"Supplier","linkName":"supplier"},"sourceReference":"supplier"}]}
+{
+  "$schema": "https://contentgrid.cloud/schemas/application-schema.json",
+  "applicationName": "default",
+  "version": "1.0.0",
+  "entities": [
+    {
+      "name": "supplier",
+      "title": "Supplier",
+      "collectionTitle": "Suppliers",
+      "table": "supplier",
+      "pathSegment": "suppliers",
+      "linkName": "suppliers",
+      "primaryKey": {
+        "type": "simple",
+        "name": "id",
+        "dataType": "uuid",
+        "columnName": "id",
+        "flags": [
+          "readOnly"
+        ]
+      },
+      "attributes": [
+        {
+          "type": "simple",
+          "name": "_version",
+          "dataType": "long",
+          "columnName": "_version",
+          "flags": [
+            "eTag"
+          ]
+        },
+        {
+          "type": "simple",
+          "name": "name",
+          "dataType": "text",
+          "columnName": "name",
+          "constraints": [
+            {
+              "type": "required"
+            }
+          ],
+          "title": "Name"
+        },
+        {
+          "type": "simple",
+          "name": "telephone",
+          "dataType": "text",
+          "columnName": "telephone",
+          "constraints": [
+            {
+              "type": "required"
+            }
+          ],
+          "title": "Telephone"
+        },
+        {
+          "type": "simple",
+          "name": "bank_account",
+          "dataType": "text",
+          "columnName": "bank_account",
+          "constraints": [
+            {
+              "type": "unique"
+            }
+          ],
+          "title": "Bank account"
+        }
+      ],
+      "searchFilters": [
+        {
+          "name": "name",
+          "attributePath": [
+            {
+              "name": "name",
+              "type": "attr"
+            }
+          ],
+          "title": "Name",
+          "type": "exact"
+        },
+        {
+          "name": "name~prefix",
+          "attributePath": [
+            {
+              "name": "name",
+              "type": "attr"
+            }
+          ],
+          "type": "prefix"
+        },
+        {
+          "name": "bank_account~prefix",
+          "attributePath": [
+            {
+              "name": "bank_account",
+              "type": "attr"
+            }
+          ],
+          "type": "prefix"
+        }
+      ],
+      "sortableFields": [
+        {
+          "name": "name",
+          "attributePath": [
+            {
+              "name": "name",
+              "type": "attr"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "invoice",
+      "title": "Invoice",
+      "collectionTitle": "Invoices",
+      "table": "invoice",
+      "pathSegment": "invoices",
+      "linkName": "invoices",
+      "primaryKey": {
+        "type": "simple",
+        "name": "id",
+        "dataType": "uuid",
+        "columnName": "id",
+        "flags": [
+          "readOnly"
+        ]
+      },
+      "attributes": [
+        {
+          "type": "simple",
+          "name": "_version",
+          "dataType": "long",
+          "columnName": "_version",
+          "flags": [
+            "eTag"
+          ]
+        },
+        {
+          "type": "simple",
+          "name": "received",
+          "dataType": "datetime",
+          "columnName": "received",
+          "constraints": [
+            {
+              "type": "required"
+            }
+          ],
+          "title": "Received"
+        },
+        {
+          "type": "content",
+          "name": "document",
+          "pathSegment": "document",
+          "linkName": "document",
+          "idColumn": "document__id",
+          "fileNameColumn": "document__filename",
+          "mimeTypeColumn": "document__mimetype",
+          "lengthColumn": "document__length",
+          "title": "Document"
+        },
+        {
+          "type": "simple",
+          "name": "pay_before",
+          "dataType": "datetime",
+          "columnName": "pay_before",
+          "constraints": [
+            {
+              "type": "required"
+            }
+          ],
+          "title": "Pay before"
+        },
+        {
+          "type": "simple",
+          "name": "total_amount",
+          "dataType": "double",
+          "columnName": "total_amount",
+          "constraints": [
+            {
+              "type": "required"
+            }
+          ],
+          "title": "Total amount"
+        }
+      ],
+      "searchFilters": [
+        {
+          "name": "pay_before",
+          "attributePath": [
+            {
+              "name": "pay_before",
+              "type": "attr"
+            }
+          ],
+          "title": "Pay before",
+          "type": "exact"
+        },
+        {
+          "name": "pay_before~after",
+          "attributePath": [
+            {
+              "name": "pay_before",
+              "type": "attr"
+            }
+          ],
+          "type": "greater"
+        },
+        {
+          "name": "pay_before~before",
+          "attributePath": [
+            {
+              "name": "pay_before",
+              "type": "attr"
+            }
+          ],
+          "type": "less"
+        },
+        {
+          "name": "total_amount",
+          "attributePath": [
+            {
+              "name": "total_amount",
+              "type": "attr"
+            }
+          ],
+          "title": "Total amount",
+          "type": "exact"
+        },
+        {
+          "name": "total_amount~gt",
+          "attributePath": [
+            {
+              "name": "total_amount",
+              "type": "attr"
+            }
+          ],
+          "type": "greater"
+        },
+        {
+          "name": "total_amount~gte",
+          "attributePath": [
+            {
+              "name": "total_amount",
+              "type": "attr"
+            }
+          ],
+          "type": "greater-or-equal"
+        },
+        {
+          "name": "total_amount~lt",
+          "attributePath": [
+            {
+              "name": "total_amount",
+              "type": "attr"
+            }
+          ],
+          "type": "less"
+        },
+        {
+          "name": "total_amount~lte",
+          "attributePath": [
+            {
+              "name": "total_amount",
+              "type": "attr"
+            }
+          ],
+          "type": "less-or-equal"
+        },
+        {
+          "name": "supplier.name",
+          "attributePath": [
+            {
+              "name": "supplier",
+              "type": "rel"
+            },
+            {
+              "name": "name",
+              "type": "attr"
+            }
+          ],
+          "title": "Supplier: Name",
+          "type": "exact"
+        },
+        {
+          "name": "supplier.name~prefix",
+          "attributePath": [
+            {
+              "name": "supplier",
+              "type": "rel"
+            },
+            {
+              "name": "name",
+              "type": "attr"
+            }
+          ],
+          "type": "prefix"
+        },
+        {
+          "name": "supplier.bank_account~prefix",
+          "attributePath": [
+            {
+              "name": "supplier",
+              "type": "rel"
+            },
+            {
+              "name": "bank_account",
+              "type": "attr"
+            }
+          ],
+          "type": "prefix"
+        }
+      ],
+      "sortableFields": [
+        {
+          "name": "pay_before",
+          "attributePath": [
+            {
+              "name": "pay_before",
+              "type": "attr"
+            }
+          ]
+        },
+        {
+          "name": "total_amount",
+          "attributePath": [
+            {
+              "name": "total_amount",
+              "type": "attr"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "relations": [
+    {
+      "type": "one-to-many",
+      "sourceEndpoint": {
+        "entityName": "supplier",
+        "flags": [
+          "hidden"
+        ]
+      },
+      "targetEndpoint": {
+        "name": "supplier",
+        "pathSegment": "supplier",
+        "entityName": "invoice",
+        "title": "Supplier",
+        "linkName": "supplier"
+      },
+      "sourceReference": "supplier"
+    }
+  ]
+}
