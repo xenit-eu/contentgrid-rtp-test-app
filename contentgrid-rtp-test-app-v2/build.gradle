@@ -19,7 +19,7 @@ repositories {
 }
 
 dependencies {
-	implementation 'com.contentgrid.appserver:contentgrid-appserver-spring-boot-starter:0.0.5'
+	implementation 'com.contentgrid.appserver:contentgrid-appserver-spring-boot-starter:0.0.10'
 	implementation 'org.flywaydb:flyway-core'
 	implementation 'org.flywaydb:flyway-database-postgresql'
 	implementation 'org.testcontainers:postgresql'
