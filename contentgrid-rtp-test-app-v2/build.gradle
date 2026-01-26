@@ -32,6 +32,7 @@ tasks.named('bootRun') {
 	systemProperty 'contentgrid.security.csrf.disabled', true
 	systemProperty 'contentgrid.thunx.abac.source', 'none'
 	systemProperty 'contentgrid.appserver.content-store.type', 'ephemeral'
+	systemProperty 'contentgrid.events.rabbitmq.enabled', false
 }
 
 tasks.named('test') {

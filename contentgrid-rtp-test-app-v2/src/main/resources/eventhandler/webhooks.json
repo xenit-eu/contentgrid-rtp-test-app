@@ -1,1 +1,84 @@
-{"webhooks":{"client":[]}}
+{
+  "webhooks": {
+    "client": [
+      {
+        "filter": {
+          "trigger": "create",
+          "entity": "supplier",
+          "application_id": "${system.application.id}",
+          "deployment_id": "${system.deployment.id}"
+        },
+        "endpoints": [
+          {
+            "uri": "http://webhook-receiver.contentgrid.test/receive?entity=supplier"
+          }
+        ]
+      },
+      {
+        "filter": {
+          "trigger": "update",
+          "entity": "supplier",
+          "application_id": "${system.application.id}",
+          "deployment_id": "${system.deployment.id}"
+        },
+        "endpoints": [
+          {
+            "uri": "http://webhook-receiver.contentgrid.test/receive?entity=supplier"
+          }
+        ]
+      },
+      {
+        "filter": {
+          "trigger": "delete",
+          "entity": "supplier",
+          "application_id": "${system.application.id}",
+          "deployment_id": "${system.deployment.id}"
+        },
+        "endpoints": [
+          {
+            "uri": "http://webhook-receiver.contentgrid.test/receive?entity=supplier"
+          }
+        ]
+      },
+      {
+        "filter": {
+          "trigger": "create",
+          "entity": "invoice",
+          "application_id": "${system.application.id}",
+          "deployment_id": "${system.deployment.id}"
+        },
+        "endpoints": [
+          {
+            "uri": "http://webhook-receiver.contentgrid.test/receive?entity=invoice"
+          }
+        ]
+      },
+      {
+        "filter": {
+          "trigger": "update",
+          "entity": "invoice",
+          "application_id": "${system.application.id}",
+          "deployment_id": "${system.deployment.id}"
+        },
+        "endpoints": [
+          {
+            "uri": "http://webhook-receiver.contentgrid.test/receive?entity=invoice"
+          }
+        ]
+      },
+      {
+        "filter": {
+          "trigger": "delete",
+          "entity": "invoice",
+          "application_id": "${system.application.id}",
+          "deployment_id": "${system.deployment.id}"
+        },
+        "endpoints": [
+          {
+            "uri": "http://webhook-receiver.contentgrid.test/receive?entity=invoice"
+          }
+        ]
+      }
+    ]
+  }
+}

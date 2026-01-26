@@ -1,1 +1,84 @@
-{"webhooks":{"client":[]}}
+{
+  "webhooks": {
+    "client": [
+      {
+        "filter": {
+          "trigger": "create",
+          "entity": "com.contentgrid.userapps.rtptestorg.rtptestapp.model.Supplier",
+          "application_id": "${system.application.id}",
+          "deployment_id": "${system.deployment.id}"
+        },
+        "endpoints": [
+          {
+            "uri": "http://webhook-receiver.contentgrid.test/receive?entity=supplier"
+          }
+        ]
+      },
+      {
+        "filter": {
+          "trigger": "update",
+          "entity": "com.contentgrid.userapps.rtptestorg.rtptestapp.model.Supplier",
+          "application_id": "${system.application.id}",
+          "deployment_id": "${system.deployment.id}"
+        },
+        "endpoints": [
+          {
+            "uri": "http://webhook-receiver.contentgrid.test/receive?entity=supplier"
+          }
+        ]
+      },
+      {
+        "filter": {
+          "trigger": "delete",
+          "entity": "com.contentgrid.userapps.rtptestorg.rtptestapp.model.Supplier",
+          "application_id": "${system.application.id}",
+          "deployment_id": "${system.deployment.id}"
+        },
+        "endpoints": [
+          {
+            "uri": "http://webhook-receiver.contentgrid.test/receive?entity=supplier"
+          }
+        ]
+      },
+      {
+        "filter": {
+          "trigger": "create",
+          "entity": "com.contentgrid.userapps.rtptestorg.rtptestapp.model.Invoice",
+          "application_id": "${system.application.id}",
+          "deployment_id": "${system.deployment.id}"
+        },
+        "endpoints": [
+          {
+            "uri": "http://webhook-receiver.contentgrid.test/receive?entity=invoice"
+          }
+        ]
+      },
+      {
+        "filter": {
+          "trigger": "update",
+          "entity": "com.contentgrid.userapps.rtptestorg.rtptestapp.model.Invoice",
+          "application_id": "${system.application.id}",
+          "deployment_id": "${system.deployment.id}"
+        },
+        "endpoints": [
+          {
+            "uri": "http://webhook-receiver.contentgrid.test/receive?entity=invoice"
+          }
+        ]
+      },
+      {
+        "filter": {
+          "trigger": "delete",
+          "entity": "com.contentgrid.userapps.rtptestorg.rtptestapp.model.Invoice",
+          "application_id": "${system.application.id}",
+          "deployment_id": "${system.deployment.id}"
+        },
+        "endpoints": [
+          {
+            "uri": "http://webhook-receiver.contentgrid.test/receive?entity=invoice"
+          }
+        ]
+      }
+    ]
+  }
+}

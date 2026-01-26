@@ -15,4 +15,5 @@ contentgrid:
     application-model: classpath:application-model.json
 server:
   port: ${PORT:8080}
-  max-http-request-header-size: 10MB
+  tomcat:
+    max-part-count: 200
