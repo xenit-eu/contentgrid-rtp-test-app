@@ -9,7 +9,7 @@
       "collectionTitle": "Suppliers",
       "table": "supplier",
       "pathSegment": "suppliers",
-      "linkName": "suppliers",
+      "linkName": "supplier",
       "primaryKey": {
         "type": "simple",
         "name": "id",
@@ -86,6 +86,7 @@
               "type": "attr"
             }
           ],
+          "title": "Name",
           "type": "prefix"
         },
         {
@@ -96,6 +97,7 @@
               "type": "attr"
             }
           ],
+          "title": "Bank account",
           "type": "prefix"
         }
       ],
@@ -117,7 +119,7 @@
       "collectionTitle": "Invoices",
       "table": "invoice",
       "pathSegment": "invoices",
-      "linkName": "invoices",
+      "linkName": "invoice",
       "primaryKey": {
         "type": "simple",
         "name": "id",
@@ -205,6 +207,7 @@
               "type": "attr"
             }
           ],
+          "title": "Pay before: After",
           "type": "greater"
         },
         {
@@ -215,6 +218,7 @@
               "type": "attr"
             }
           ],
+          "title": "Pay before: Before",
           "type": "less"
         },
         {
@@ -236,6 +240,7 @@
               "type": "attr"
             }
           ],
+          "title": "Total amount: Greater than",
           "type": "greater"
         },
         {
@@ -246,6 +251,7 @@
               "type": "attr"
             }
           ],
+          "title": "Total amount: Min",
           "type": "greater-or-equal"
         },
         {
@@ -256,6 +262,7 @@
               "type": "attr"
             }
           ],
+          "title": "Total amount: Less than",
           "type": "less"
         },
         {
@@ -266,6 +273,7 @@
               "type": "attr"
             }
           ],
+          "title": "Total amount: Max",
           "type": "less-or-equal"
         },
         {
@@ -295,6 +303,7 @@
               "type": "attr"
             }
           ],
+          "title": "Supplier: Name",
           "type": "prefix"
         },
         {
@@ -309,6 +318,7 @@
               "type": "attr"
             }
           ],
+          "title": "Supplier: Bank account",
           "type": "prefix"
         }
       ],

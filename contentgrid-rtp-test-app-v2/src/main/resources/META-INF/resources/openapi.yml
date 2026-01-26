@@ -1,8 +1,8 @@
 openapi: "3.0.2"
 info:
-  description: "ContentGrid app for rtptestorg/rtptestapp"
+  description: "ContentGrid app for rtp-test-org/rtp-test-app"
   version: "0.0.1-SNAPSHOT"
-  title: "RtptestappApiApplication"
+  title: "RtpTestAppApiApplication"
 tags:
 - name: "supplier"
   description: ""
@@ -508,41 +508,6 @@ paths:
                 $ref: "#/components/schemas/supplierResponse"
         "404":
           description: "The supplier relation does not link to any supplier"
-    post:
-      tags:
-      - "invoice"
-      operationId: "add-invoice-supplier"
-      summary: "Set the supplier that is linked with invoice as supplier"
-      parameters:
-      - name: "id"
-        in: "path"
-        required: true
-        schema:
-          type: "string"
-      requestBody:
-        description: "One supplier URI"
-        required: true
-        content:
-          text/uri-list:
-            schema:
-              type: "string"
-              example: "/suppliers/00000000-0000-0000-0000-000000000000"
-      responses:
-        "204":
-          description: "The supplier is linked with invoice as supplier"
-        "400":
-          description: "Multiple URIs are given, but supplier can only refer to one\
-            \ item"
-          content:
-            application/problem+json:
-              schema:
-                $ref: "#/components/schemas/problemDetailDiscriminator"
-        "409":
-          description: "Invalid supplier is present in the URI list"
-          content:
-            application/problem+json:
-              schema:
-                $ref: "#/components/schemas/problemDetailDiscriminator"
     put:
       tags:
       - "invoice"
@@ -572,6 +537,13 @@ paths:
             application/problem+json:
               schema:
                 $ref: "#/components/schemas/problemDetailDiscriminator"
+        "409":
+          description: "The supplier is already linked with a different invoice as\
+            \ supplier"
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/problemDetailDiscriminator"
     delete:
       tags:
       - "invoice"
@@ -586,9 +558,12 @@ paths:
       responses:
         "204":
           description: "The link to supplier has been removed from supplier"
-        "405":
+        "400":
           description: "You can not remove the supplier link, because it is marked\
             \ as required"
+        "409":
+          description: "You can not remove the supplier link, because the inverse\
+            \ relation is marked as required"
   /invoices/{id}/document:
     get:
       tags:
@@ -614,7 +589,7 @@ paths:
     put:
       tags:
       - "invoice"
-      operationId: "update-invoice-document"
+      operationId: "put-invoice-document"
       summary: "Add or update the document file stored with invoice"
       parameters:
       - name: "id"
@@ -631,9 +606,29 @@ paths:
               type: "string"
               format: "binary"
       responses:
-        "200":
-          description: "The file is uploaded and has overwritten the old file"
-        "201":
+        "204":
+          description: "The file is uploaded"
+    post:
+      tags:
+      - "invoice"
+      operationId: "post-invoice-document"
+      summary: "Add or update the document file stored with invoice"
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        schema:
+          type: "string"
+      requestBody:
+        description: "File data to store"
+        required: true
+        content:
+          '*/*':
+            schema:
+              type: "string"
+              format: "binary"
+      responses:
+        "204":
           description: "The file is uploaded"
     delete:
       tags:
