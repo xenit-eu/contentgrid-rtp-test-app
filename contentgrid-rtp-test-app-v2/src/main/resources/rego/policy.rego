@@ -59,6 +59,16 @@ can_delete_invoice if {
 	input.auth.principal["contentgrid:manage_invoices"] == true
 }
 # End policy 6z4vihwwdvdq
+
+# Manual policy to be able to check a few cases in RTP tests
+can_read_invoice if {
+    input.auth.authenticated == true
+    input.auth.principal.kind == "user"
+    input.auth.principal["contentgrid:max_invoice_amount"] >= input.entity.total_amount
+    input.auth.principal["contentgrid:suppliers"][_] == input.entity.supplier.name
+}
+
+
 # Policy zsn6mlr6y4tq
 # - input.entity is type 'supplier'
 can_read_supplier if {
