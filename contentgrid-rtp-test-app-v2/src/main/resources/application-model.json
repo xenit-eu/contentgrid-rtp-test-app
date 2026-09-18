@@ -362,5 +362,10 @@
       },
       "sourceReference": "supplier"
     }
-  ]
+  ],
+  "settings": {
+    "database": {
+      "schema": "V1"
+    }
+  }
 }

@@ -65,7 +65,7 @@ can_read_invoice if {
     input.auth.authenticated == true
     input.auth.principal.kind == "user"
     input.auth.principal["contentgrid:max_invoice_amount"] >= input.entity.total_amount
-    input.auth.principal["contentgrid:suppliers"][_] == input.entity.supplier.name
+    input.entity.supplier.name in input.auth.principal["contentgrid:suppliers"]
 }
 
 
