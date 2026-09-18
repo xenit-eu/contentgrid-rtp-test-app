@@ -22,7 +22,7 @@ dependencies {
 	implementation 'com.contentgrid.appserver:contentgrid-appserver-spring-boot-starter:0.2.1'
 	implementation 'org.flywaydb:flyway-core'
 	implementation 'org.flywaydb:flyway-database-postgresql'
-	implementation 'org.testcontainers:postgresql'
+	implementation 'org.testcontainers:testcontainers-postgresql'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
