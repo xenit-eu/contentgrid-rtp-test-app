@@ -24,6 +24,7 @@ spring:
       limit-param-name: _size
 server:
   port: ${PORT:8080}
+  max-http-request-header-size: 1MB
 contentgrid:
   rest:
     pagination: page_cursor
